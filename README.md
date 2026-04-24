@@ -8,6 +8,44 @@
 
 ## EN — English
 
+### What this is NOT
+
+```
+TinyAPI is educational only.
+It does not provide production-grade security, validation, ASGI support,
+OpenAPI docs, authentication, rate limiting, or robust HTTP handling.
+Use FastAPI, Starlette, or Django for real projects.
+```
+
+### Request lifecycle
+
+```
+Browser
+  │
+  │  HTTP: "GET /users/42"
+  ▼
+server.py          — opens TCP socket, parses raw HTTP bytes
+  │
+  ▼
+Request            — wraps method, path, headers, body into a Python object
+  │
+  ▼
+Router.resolve()   — finds the Route whose regex matches the URL
+  │
+  ▼
+resolve_handler_params()  — inspects the handler's type hints,
+  │                         pulls values from path/query params,
+  │                         resolves Depends() dependencies
+  ▼
+handler()          — your function: def get_user(id: int): ...
+  │
+  ▼
+Response           — wraps the return value into status + headers + body
+  │
+  ▼
+Browser            — receives JSON / text
+```
+
 ### What you will learn
 
 | File | Topic | Python concepts |
@@ -18,6 +56,7 @@
 | `examples/04_dependencies.py` | Dependency Injection | `Depends`, recursion |
 | `examples/05_async.py` | Async/Await | `asyncio`, coroutines |
 | `examples/06_middleware.py` | Middleware | Decorator pattern |
+| `examples/07_json_body.py` | JSON body, CRUD | POST/PUT/DELETE, REST |
 
 ### Quick start
 
@@ -71,7 +110,7 @@ tinyapi/
 │   ├── params.py         # Introspection + type coercion
 │   ├── dependencies.py   # Depends class
 │   └── server.py         # WSGI HTTP server
-├── examples/             # Learning cases (01–06)
+├── examples/             # Learning cases (01–07)
 ├── tests/                # 16 unit tests
 └── pyproject.toml        # uv / Python project config
 ```
@@ -97,6 +136,44 @@ OpenAPI docs, WebSockets, background tasks, OAuth2, and much more.
 
 ## CZ — Čeština
 
+### Co toto NENÍ
+
+```
+TinyAPI je pouze vzdělávací projekt.
+Neposkytuje produkční bezpečnost, validaci, ASGI, OpenAPI dokumentaci,
+autentizaci, rate limiting ani robustní HTTP zpracování.
+Pro reálné projekty použij FastAPI, Starlette nebo Django.
+```
+
+### Životní cyklus požadavku
+
+```
+Prohlížeč
+  │
+  │  HTTP: "GET /uzivatele/42"
+  ▼
+server.py          — otevře TCP socket, parsuje surové HTTP bajty
+  │
+  ▼
+Request            — zabalí metodu, cestu, hlavičky, tělo do Python objektu
+  │
+  ▼
+Router.resolve()   — najde Route jejíž regex odpovídá URL
+  │
+  ▼
+resolve_handler_params()  — introspektuje type hinty handleru,
+  │                         vytáhne hodnoty z path/query parametrů,
+  │                         vyřeší Depends() závislosti
+  ▼
+handler()          — tvoje funkce: def get_uzivatel(id: int): ...
+  │
+  ▼
+Response           — zabalí výsledek do status + hlavičky + tělo
+  │
+  ▼
+Prohlížeč          — dostane JSON / text
+```
+
 ### Co se naučíš
 
 | Soubor | Téma | Python koncepty |
@@ -107,6 +184,7 @@ OpenAPI docs, WebSockets, background tasks, OAuth2, and much more.
 | `examples/04_dependencies.py` | Dependency Injection | `Depends`, rekurze |
 | `examples/05_async.py` | Async/Await | `asyncio`, coroutiny |
 | `examples/06_middleware.py` | Middleware | Decorator pattern |
+| `examples/07_json_body.py` | JSON tělo, CRUD | POST/PUT/DELETE, REST |
 
 ### Rychlý start
 
@@ -160,7 +238,7 @@ tinyapi/
 │   ├── params.py         # Introspekce + typová konverze
 │   ├── dependencies.py   # Třída Depends
 │   └── server.py         # WSGI HTTP server
-├── examples/             # Learning cases (01–06)
+├── examples/             # Learning cases (01–07)
 ├── tests/                # 16 unit testů
 └── pyproject.toml        # uv / Python konfigurace projektu
 ```

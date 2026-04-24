@@ -45,6 +45,7 @@ app = TinyAPI()
 # 4. Vrátí domov beze změny
 # ============================================================
 
+
 # @app.get("/") říká: "tato funkce obsluhuje GET požadavky na /"
 @app.get("/")
 # Funkce domov se zavolá když někdo navštíví http://server:8888/
@@ -68,6 +69,7 @@ def pozdrav():
 def info():
     # Importujeme modul sys — obsahuje informace o Python prostředí
     import sys
+
     # Vrátíme více informací najednou
     return {
         # Název frameworku
@@ -87,7 +89,6 @@ def info():
 # Tento blok se spustí jen když soubor spustíš přímo
 # Pokud ho někdo importuje (import 01_hello_world), kód se nespustí
 if __name__ == "__main__":
-
     # Ukážeme že funkce fungují i bez serveru
     print("=== Test bez serveru ===")
 

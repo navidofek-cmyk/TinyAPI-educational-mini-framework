@@ -119,6 +119,7 @@ def require_admin(uzivatel=Depends(get_current_user)) -> dict:
 # ENDPOINTY POUŽÍVAJÍCÍ ZÁVISLOSTI
 # ============================================================
 
+
 # GET /profil — vidí každý (i nepřihlášený)
 @app.get("/profil")
 # Depends(get_current_user) = "zavolej get_current_user() a výsledek mi dej jako uzivatel"
@@ -159,7 +160,6 @@ def statistiky(db=Depends(get_db)):
 
 # Spusť kód jen při přímém spuštění souboru
 if __name__ == "__main__":
-
     print("=== Ukázka Dependency Injection ===")
     print()
 

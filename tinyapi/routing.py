@@ -95,7 +95,6 @@ class Route:
         # Nejprve zkontrolujeme HTTP metodu (GET, POST...)
         # .upper() = převede na velká písmena pro jistotu
         if self.method != method.upper():
-
             # Špatná metoda — vrátíme None (žádná shoda)
             return None
 
@@ -105,7 +104,6 @@ class Route:
 
         # Pokud m není None (tj. regulární výraz sedí)
         if m:
-
             # .groupdict() vrátí pojmenované skupiny jako slovník
             # Například pro URL "/uzivatele/42" vrátí {"id": "42"}
             # Pozor: hodnoty jsou vždy STRING (text), i když jde o číslo!
@@ -117,7 +115,6 @@ class Route:
 
 # Třída Router uchovává seznam všech Routes a umí v nich hledat
 class Router:
-
     # __init__ se zavolá při vytvoření nového Routeru
     def __init__(self):
 
@@ -160,6 +157,7 @@ class Router:
         def decorator(func: Callable) -> Callable:
             self.add_route(path, "POST", func)
             return func
+
         return decorator
 
     # Dekorátor pro PUT požadavky (aktualizace celého záznamu)
@@ -168,6 +166,7 @@ class Router:
         def decorator(func: Callable) -> Callable:
             self.add_route(path, "PUT", func)
             return func
+
         return decorator
 
     # Dekorátor pro DELETE požadavky (mazání záznamů)
@@ -176,6 +175,7 @@ class Router:
         def decorator(func: Callable) -> Callable:
             self.add_route(path, "DELETE", func)
             return func
+
         return decorator
 
     # Dekorátor pro PATCH požadavky (aktualizace části záznamu)
@@ -184,6 +184,7 @@ class Router:
         def decorator(func: Callable) -> Callable:
             self.add_route(path, "PATCH", func)
             return func
+
         return decorator
 
     # Funkce resolve() hledá Route která odpovídá dané URL a metodě
@@ -193,13 +194,11 @@ class Router:
 
         # Procházíme všechny zaregistrované routes jednu po druhé
         for route in self.routes:
-
             # Zkusíme shodu — match() vrátí slovník nebo None
             params = route.match(path, method)
 
             # Pokud params není None — našli jsme shodu!
             if params is not None:
-
                 # Vrátíme nalezenou route a parametry z URL
                 return route, params
 
@@ -214,7 +213,6 @@ class Router:
 
         # Pro každou route přidáme řádek s metodou, cestou a názvem funkce
         for r in self.routes:
-
             # :6 = zarovnání na 6 znaků (aby GET a DELETE byly pod sebou)
             # r.handler.__name__ = název funkce (například "get_uzivatel")
             lines.append(f"  {r.method:6} {r.path} -> {r.handler.__name__}()")

@@ -39,7 +39,6 @@ from .params import resolve_handler_params
 
 # Hlavní třída celého frameworku
 class TinyAPI:
-
     # __init__ se zavolá při vytvoření: app = TinyAPI()
     def __init__(self):
 
@@ -80,15 +79,12 @@ class TinyAPI:
         # KROK 1: Spusť všechny middleware funkce
         # Například: zaloguj požadavek, zkontroluj přihlášení...
         for mw_func in self._middleware:
-
             # Zkontrolujeme jestli je middleware funkce async nebo normální
             if asyncio.iscoroutinefunction(mw_func):
-
                 # async middleware — musíme await
                 await mw_func(request)
 
             else:
-
                 # normální middleware — zavoláme přímo
                 mw_func(request)
 
@@ -98,54 +94,45 @@ class TinyAPI:
 
         # Pokud route je None — žádná cesta neodpovídá
         if route is None:
-
             # Vrátíme odpověď 404 Not Found
             # Slovník se automaticky převede na JSON
             return Response(
-                {"chyba": f"Stránka '{request.path}' neexistuje"},
-                status_code=404
+                {"chyba": f"Stránka '{request.path}' neexistuje"}, status_code=404
             )
 
         # KROK 3: Zjisti co handler potřebuje a naplň parametry
         # try/except zachytí chybu pokud chybí povinný parametr
         try:
-
             # resolve_handler_params je async — musíme await
             # Vrátí slovník jako: {"id": 42, "jmeno": "Honza"}
             kwargs = await resolve_handler_params(route.handler, request, path_params)
 
         # TypeError nastane když chybí povinný parametr
         except TypeError as e:
-
             # 422 = Unprocessable Entity (nelze zpracovat — chybné parametry)
             return Response({"chyba": str(e)}, status_code=422)
 
         # KROK 4: Zavolej handler (funkci) s připravenými argumenty
         # try/except zachytí libovolnou chybu v kódu handleru
         try:
-
             # Zkontrolujeme jestli je handler async nebo normální funkce
             if asyncio.iscoroutinefunction(route.handler):
-
                 # async handler — musíme await
                 # **kwargs = "rozbal slovník jako pojmenované argumenty"
                 result = await route.handler(**kwargs)
 
             else:
-
                 # normální handler — zavoláme přímo
                 result = route.handler(**kwargs)
 
         # Exception zachytí JAKOUKOLI chybu (nejobecnější typ chyby)
         except Exception as e:
-
             # 500 = Internal Server Error (chyba v kódu)
             return Response({"chyba": f"Interní chyba: {str(e)}"}, status_code=500)
 
         # KROK 5: Zabal výsledek do Response (pokud ještě není)
         # Pokud handler vrátil přímo Response objekt — použijeme ho
         if isinstance(result, Response):
-
             # Handler vrátil Response přímo -> použijeme beze změny
             return result
 

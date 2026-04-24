@@ -16,21 +16,20 @@ import json
 # Každý číselný kód má svůj anglický název
 # Je to jako slovník cizojazyčných výrazů
 STATUS_TEXTS = {
-    200: "OK",                    # Vše v pořádku
-    201: "Created",               # Nový záznam byl vytvořen
-    204: "No Content",            # Odpověď nemá obsah
-    400: "Bad Request",           # Špatně sestavená žádost
-    401: "Unauthorized",          # Nejsi přihlášen
-    403: "Forbidden",             # Nemáš oprávnění
-    404: "Not Found",             # Stránka nenalezena
+    200: "OK",  # Vše v pořádku
+    201: "Created",  # Nový záznam byl vytvořen
+    204: "No Content",  # Odpověď nemá obsah
+    400: "Bad Request",  # Špatně sestavená žádost
+    401: "Unauthorized",  # Nejsi přihlášen
+    403: "Forbidden",  # Nemáš oprávnění
+    404: "Not Found",  # Stránka nenalezena
     422: "Unprocessable Entity",  # Data nejdou zpracovat (chybné parametry)
-    500: "Internal Server Error", # Chyba v kódu serveru
+    500: "Internal Server Error",  # Chyba v kódu serveru
 }
 
 
 # Třída Response představuje jednu odpověď serveru
 class Response:
-
     # __init__ se zavolá při vytvoření nové odpovědi
     # content = co chceme poslat (slovník, text, číslo...)
     # status_code = číslo stavu, výchozí 200 (OK)
@@ -50,7 +49,6 @@ class Response:
 
         # Případ 1: content je slovník {} nebo seznam [] — převedeme na JSON
         if isinstance(content, (dict, list)):
-
             # json.dumps() převede Python slovník/seznam na JSON text (string)
             # ensure_ascii=False = zachovej česká písmena (á, é, í...) jako jsou
             # .encode("utf-8") převede text na bytes (bajty) — počítače pracují s bajty
@@ -62,7 +60,6 @@ class Response:
 
         # Případ 2: content je text (string) — zakódujeme ho
         elif isinstance(content, str):
-
             # .encode("utf-8") převede text na bytes
             self.body = content.encode("utf-8")
 
@@ -71,19 +68,16 @@ class Response:
 
         # Případ 3: content jsou již hotové bytes — použijeme přímo
         elif isinstance(content, bytes):
-
             # Bytes jsou jako hotové zabalené jídlo — nemusíme nic dělat
             self.body = content
 
         # Případ 4: content je None (nic) — prázdná odpověď
         elif content is None:
-
             # b"" jsou prázdné bytes — jako prázdná krabička
             self.body = b""
 
         # Případ 5: cokoliv jiného — převedeme na text pomocí str()
         else:
-
             # str() převede cokoliv na textový řetězec
             # Například číslo 42 -> "42"
             self.body = str(content).encode("utf-8")

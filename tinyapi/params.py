@@ -37,7 +37,6 @@ def coerce(value: str, target_type) -> Any:
 
     # Pokud chceme boolean (True/False)
     if target_type is bool:
-
         # .lower() převede na malá písmena: "True" -> "true"
         # in (...) zkontroluje jestli je hodnota v seznamu
         # Vrátí True pro "1", "true", "yes", "ano" — jinak False
@@ -45,16 +44,13 @@ def coerce(value: str, target_type) -> Any:
 
     # Pokud chceme číslo (celé nebo desetinné)
     if target_type in (int, float):
-
         # Zkusíme převést — "42" -> 42, "3.14" -> 3.14
         try:
-
             # target_type(value) zavolá int() nebo float() s hodnotou
             return target_type(value)
 
         # ValueError nastane když převod selže — "abc" nejde převést na int
         except ValueError:
-
             # Vyhodíme vlastní chybu s popisem co se stalo
             raise TypeError(f"Nelze převést '{value}' na {target_type.__name__}")
 
@@ -90,7 +86,6 @@ async def resolve_handler_params(handler, request, path_params: dict) -> dict:
     # sig.parameters je slovník: {"id": <Parameter id: int>, ...}
     # .items() vrátí dvojice (název, objekt parametru)
     for name, param in sig.parameters.items():
-
         # Zjistíme typ parametru z hints slovníku
         # .get() vrátí None pokud typ není definován
         annotated_type = hints.get(name)
@@ -99,8 +94,10 @@ async def resolve_handler_params(handler, request, path_params: dict) -> dict:
         # getattr() bezpečně získá atribut objektu (nebo None pokud neexistuje)
         # __name__ je název třídy: Request.__name__ == "Request"
         # Tím se vyhneme importu Request zde (zamezení circular importu)
-        if annotated_type is not None and getattr(annotated_type, "__name__", "") == "Request":
-
+        if (
+            annotated_type is not None
+            and getattr(annotated_type, "__name__", "") == "Request"
+        ):
             # Dáme handleru celý request objekt
             kwargs[name] = request
 
@@ -110,7 +107,6 @@ async def resolve_handler_params(handler, request, path_params: dict) -> dict:
         # PŘÍPAD 2: Parametr má Depends() — dependency injection
         # isinstance() zkontroluje jestli výchozí hodnota parametru je Depends objekt
         if isinstance(param.default, Depends):
-
             # Vytáhneme funkci ze závislosti
             dep_func = param.default.dependency
 
@@ -121,12 +117,10 @@ async def resolve_handler_params(handler, request, path_params: dict) -> dict:
 
             # Zkontrolujeme jestli je závislostní funkce async nebo normální
             if asyncio.iscoroutinefunction(dep_func):
-
                 # async funkce — musíme použít await
                 kwargs[name] = await dep_func(**dep_kwargs)
 
             else:
-
                 # normální funkce — zavoláme přímo
                 # **dep_kwargs = "rozbal slovník jako argumenty funkce"
                 kwargs[name] = dep_func(**dep_kwargs)
@@ -137,7 +131,6 @@ async def resolve_handler_params(handler, request, path_params: dict) -> dict:
         # PŘÍPAD 3: Parametr je v path_params (z URL vzoru {id})
         # Například URL "/uzivatele/42" a vzor "/uzivatele/{id}" -> path_params = {"id": "42"}
         if name in path_params:
-
             # Vezmeme textovou hodnotu z URL
             raw_value = path_params[name]
 
@@ -153,7 +146,6 @@ async def resolve_handler_params(handler, request, path_params: dict) -> dict:
         # PŘÍPAD 4: Parametr je v query_params (za ? v URL)
         # Například URL "/hledat?slovo=pes" -> query_params = {"slovo": "pes"}
         if name in request.query_params:
-
             # Vezmeme textovou hodnotu z query stringu
             raw_value = request.query_params[name]
 
@@ -169,7 +161,6 @@ async def resolve_handler_params(handler, request, path_params: dict) -> dict:
         # PŘÍPAD 5: Parametr má výchozí hodnotu (default value)
         # inspect.Parameter.empty je speciální sentinel — znamená "žádná výchozí hodnota"
         if param.default is not inspect.Parameter.empty:
-
             # Použijeme výchozí hodnotu
             kwargs[name] = param.default
 
@@ -178,7 +169,9 @@ async def resolve_handler_params(handler, request, path_params: dict) -> dict:
 
         # PŘÍPAD 6: Parametr je povinný a nikde jsme ho nenašli — chyba!
         # Vyhodíme TypeError s popisem chybějícího parametru
-        raise TypeError(f"Chybí povinný parametr: '{name}' ve funkci {handler.__name__}()")
+        raise TypeError(
+            f"Chybí povinný parametr: '{name}' ve funkci {handler.__name__}()"
+        )
 
     # Vrátíme hotový slovník argumentů
     return kwargs

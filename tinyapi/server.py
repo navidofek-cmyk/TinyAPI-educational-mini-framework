@@ -46,7 +46,6 @@ from .request import Request
 # Python hledá metody v pořadí: ThreadedWSGIServer -> ThreadingMixIn -> WSGIServer
 # Tomu se říká MRO = Method Resolution Order
 class ThreadedWSGIServer(ThreadingMixIn, WSGIServer):
-
     # daemon_threads = True znamená:
     # "Vlákna jsou démoni — ukončí se automaticky když skončí hlavní program"
     # Bez toho by server čekal na dokončení všech vláken i po Ctrl+C
@@ -90,10 +89,8 @@ def make_wsgi_app(tinyapi_app):
 
         # Projdeme všechny klíče v environ
         for key, value in environ.items():
-
             # Zajímají nás jen klíče začínající "HTTP_"
             if key.startswith("HTTP_"):
-
                 # Odstraníme prefix "HTTP_" (prvních 5 znaků: key[5:])
                 # Nahradíme podtržítka pomlčkami: "CONTENT_TYPE" -> "CONTENT-TYPE"
                 # .title() udělá první písmeno velké: "content-type" -> "Content-Type"
@@ -151,7 +148,6 @@ def run_server(app, host: str = "0.0.0.0", port: int = 8888):
     # make_server() vytvoří socket (síťový bod), naváže ho na host:port
     # server_class = použijeme náš vícevláknový server
     with make_server(host, port, wsgi_app, server_class=ThreadedWSGIServer) as httpd:
-
         # Vypíšeme informaci kam server naslouchá
         print(f"\n  TinyAPI server běží na http://{host}:{port}")
 
@@ -160,13 +156,11 @@ def run_server(app, host: str = "0.0.0.0", port: int = 8888):
 
         # try/except zachytí KeyboardInterrupt (Ctrl+C od uživatele)
         try:
-
             # serve_forever() = nekonečná smyčka — server čeká na požadavky
             # Tato funkce se nevrátí dokud ji nepřerušíme
             httpd.serve_forever()
 
         # KeyboardInterrupt nastane když uživatel stiskne Ctrl+C
         except KeyboardInterrupt:
-
             # Vypíšeme zprávu a ukončíme (with blok zavře server automaticky)
             print("\n  Server zastaven.")

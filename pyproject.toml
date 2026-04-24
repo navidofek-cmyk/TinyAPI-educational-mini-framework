@@ -13,6 +13,7 @@ dev = [
 [dependency-groups]
 dev = [
     "pytest>=8.0",
+    "ruff>=0.15.11",
 ]
 
 [build-system]

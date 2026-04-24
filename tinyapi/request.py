@@ -14,7 +14,6 @@ from urllib.parse import parse_qs
 # Třída je jako šablona (forma na sušenky) — z jedné formy uděláš mnoho sušenek.
 # Z třídy Request uděláme jeden objekt pro každou příchozí žádost od prohlížeče.
 class Request:
-
     # __init__ je speciální funkce, která se zavolá vždy když vytvoříme nový Request.
     # Je to jako "nastavení nové sušenky" — určíme barvu, tvar, posyp.
     # self = odkaz na tuto konkrétní sušenku (objekt), ne na formu (třídu)
@@ -23,7 +22,14 @@ class Request:
     # query_string = část URL za otazníkem: "jmeno=Honza&vek=10" (výchozí prázdný řetězec)
     # body = obsah zprávy (data poslaná u POST žádostí), výchozí prázdné bytes b""
     # headers = extra informace o žádosti (jako popisek na obálce), výchozí None
-    def __init__(self, method: str, path: str, query_string: str = "", body: bytes = b"", headers: dict = None):
+    def __init__(
+        self,
+        method: str,
+        path: str,
+        query_string: str = "",
+        body: bytes = b"",
+        headers: dict = None,
+    ):
 
         # Uložíme metodu VELKÝMI PÍSMENY (GET, POST...) — .upper() převede na velká
         # Například "get" se stane "GET", aby bylo vše jednotné
@@ -60,7 +66,6 @@ class Request:
         # Zkontrolujeme jestli jsme query_params už někdy počítali
         # None znamená "ještě jsme to nepočítali"
         if self._query_params is None:
-
             # parse_qs rozebere query_string na slovník
             # "slovo=pes&barva=cerna" -> {"slovo": ["pes"], "barva": ["cerna"]}
             # Vrací seznam hodnot pro každý klíč (proto jsou v hranatých závorkách [])
@@ -72,8 +77,7 @@ class Request:
             # Jinak (více hodnot) necháme celý seznam v
             # Toto je "dict comprehension" — zkrácený způsob vytvoření slovníku
             self._query_params = {
-                k: v[0] if len(v) == 1 else v
-                for k, v in parsed.items()
+                k: v[0] if len(v) == 1 else v for k, v in parsed.items()
             }
 
         # Vrátíme výsledek — buď právě vypočítaný nebo starý (z minulého volání)

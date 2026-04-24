@@ -50,6 +50,7 @@ app = TinyAPI()
 #   -> Rychlé, zákazníci spokojení
 # ============================================================
 
+
 # Async pomocná funkce — simuluje pomalou databázi
 # async def = tato funkce je asynchronní (coroutine)
 async def simuluj_databazi(dotaz: str, cas: float) -> dict:
@@ -165,7 +166,6 @@ async def demo():
 
 # Spusť kód jen při přímém spuštění souboru
 if __name__ == "__main__":
-
     # asyncio.run() spustí async funkci z normálního (sync) kódu
     # Je to "vstupní brána" do async světa
     asyncio.run(demo())

@@ -41,6 +41,7 @@ app = TinyAPI()
 #   Rate limit  = omez počet požadavků za minutu
 # ============================================================
 
+
 # @app.middleware zaregistruje funkci jako middleware
 @app.middleware
 # Funkce dostane Request a zavolá se před KAŽDÝM požadavkem
@@ -76,6 +77,7 @@ def pridej_hlavicky(request: Request):
 # ENDPOINTY
 # ============================================================
 
+
 # GET / — jednoduchá uvítací stránka
 @app.get("/")
 # Tento handler se zavolá po obou middleware funkcích
@@ -107,7 +109,6 @@ def info(request: Request):
 
 # Spusť kód jen při přímém spuštění souboru
 if __name__ == "__main__":
-
     print("=== Spouštím server s middleware ===")
     print("Každý požadavek bude logován v tomto terminálu.")
     print()

@@ -17,7 +17,6 @@
 # Když uvidíš Depends(get_db), říká to:
 # "Zavolej funkci get_db() a výsledek mi dej jako argument"
 class Depends:
-
     # __init__ přijme jednu věc: dependency = funkci která vrátí potřebnou hodnotu
     def __init__(self, dependency):
 

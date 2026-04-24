@@ -26,11 +26,11 @@ app = TinyAPI()
 # Falešná databáze produktů — seznam slovníků
 # Každý produkt má id (číslo), nazev (text) a cena (desetinné číslo)
 PRODUKTY = [
-    {"id": 1, "nazev": "Jablko",  "cena": 5.50},
-    {"id": 2, "nazev": "Banán",   "cena": 3.00},
-    {"id": 3, "nazev": "Jahoda",  "cena": 8.00},
-    {"id": 4, "nazev": "Malina",  "cena": 12.00},
-    {"id": 5, "nazev": "Hruška",  "cena": 4.50},
+    {"id": 1, "nazev": "Jablko", "cena": 5.50},
+    {"id": 2, "nazev": "Banán", "cena": 3.00},
+    {"id": 3, "nazev": "Jahoda", "cena": 8.00},
+    {"id": 4, "nazev": "Malina", "cena": 12.00},
+    {"id": 5, "nazev": "Hruška", "cena": 4.50},
 ]
 
 
@@ -46,6 +46,7 @@ PRODUKTY = [
 # Výchozí hodnoty (= 0.0 a = 999.0):
 # Pokud parametr není v URL, použije se výchozí hodnota.
 # ============================================================
+
 
 # Registrujeme GET /produkty
 @app.get("/produkty")
@@ -81,6 +82,7 @@ def hledat(dotaz: str, limit: int = 10):
 # Pokud handler chce celý Request, přidá parametr s type hintem Request.
 # Framework pozná typ Request a předá celý objekt (ne hledá v URL).
 # ============================================================
+
 
 # Registrujeme GET /debug
 @app.get("/debug")
@@ -119,7 +121,6 @@ def echo(request: Request):
 
 # Spusť kód jen při přímém spuštění souboru
 if __name__ == "__main__":
-
     # Ukázka přímého volání bez serveru
     print("=== Test bez serveru ===")
 

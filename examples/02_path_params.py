@@ -102,7 +102,6 @@ def nasob(a: int, b: int):
 # UKÁZKA INTROSPEKCE — jak framework "vidí" funkci
 # ============================================================
 if __name__ == "__main__":
-
     # Ukážeme jak inspect "vidí" naši funkci
     print("=== Introspekce funkce get_uzivatel ===")
 

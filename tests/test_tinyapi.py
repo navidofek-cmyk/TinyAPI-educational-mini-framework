@@ -32,19 +32,26 @@ def make_request(method="GET", path="/", query_string="", body=b"", headers=None
 # TESTY: Route matching
 # ============================================================
 
+
 def test_route_match_jednoducha_cesta():
     """Route bez parametrů."""
-    def handler(): pass
+
+    def handler():
+        pass
+
     route = Route("/domov", "GET", handler)
 
-    assert route.match("/domov", "GET") == {}    # Shoda -> prázdný dict
+    assert route.match("/domov", "GET") == {}  # Shoda -> prázdný dict
     assert route.match("/jinde", "GET") is None  # Neshoda -> None
-    assert route.match("/domov", "POST") is None # Špatná metoda
+    assert route.match("/domov", "POST") is None  # Špatná metoda
 
 
 def test_route_match_s_parametrem():
     """Route s {id} parametrem."""
-    def handler(): pass
+
+    def handler():
+        pass
+
     route = Route("/uzivatele/{id}", "GET", handler)
 
     assert route.match("/uzivatele/42", "GET") == {"id": "42"}
@@ -54,7 +61,10 @@ def test_route_match_s_parametrem():
 
 def test_route_match_vice_parametru():
     """Route s více parametry."""
-    def handler(): pass
+
+    def handler():
+        pass
+
     route = Route("/produkty/{kategorie}/{id}", "GET", handler)
 
     result = route.match("/produkty/ovoce/5", "GET")
@@ -65,15 +75,18 @@ def test_route_match_vice_parametru():
 # TESTY: Router
 # ============================================================
 
+
 def test_router_resolve():
     """Router najde správnou route."""
     router = Router()
 
     @router.get("/")
-    def domov(): return "ahoj"
+    def domov():
+        return "ahoj"
 
     @router.get("/uzivatele/{id}")
-    def uzivatel(id: int): return id
+    def uzivatel(id: int):
+        return id
 
     route, params = router.resolve("/", "GET")
     assert route is not None
@@ -89,6 +102,7 @@ def test_router_resolve():
 # ============================================================
 # TESTY: Typová konverze (coerce)
 # ============================================================
+
 
 def test_coerce_int():
     assert coerce("42", int) == 42
@@ -115,6 +129,7 @@ def test_coerce_str():
 # TESTY: TinyAPI app (end-to-end)
 # ============================================================
 
+
 def test_app_get_handler():
     """Základní GET endpoint."""
     app = TinyAPI()
@@ -128,6 +143,7 @@ def test_app_get_handler():
 
     assert resp.status_code == 200
     import json
+
     data = json.loads(resp.body)
     assert data["zprava"] == "ok"
 
@@ -152,6 +168,7 @@ def test_app_path_param_konverze():
     resp = run(app.handle_request(req))
 
     import json
+
     data = json.loads(resp.body)
     assert data["vysledek"] == 42
 
@@ -168,6 +185,7 @@ def test_app_query_params():
     resp = run(app.handle_request(req))
 
     import json
+
     data = json.loads(resp.body)
     assert data["soucet"] == 10  # 1+2+3+4 = 10
 
@@ -187,6 +205,7 @@ def test_app_dependency_injection():
     resp = run(app.handle_request(req))
 
     import json
+
     data = json.loads(resp.body)
     assert data["cislo"] == 42
 
@@ -198,6 +217,7 @@ def test_app_async_handler():
     @app.get("/async")
     async def async_handler():
         import asyncio
+
         await asyncio.sleep(0)  # Simulace async operace
         return {"typ": "async"}
 
@@ -205,6 +225,7 @@ def test_app_async_handler():
     resp = run(app.handle_request(req))
 
     import json
+
     data = json.loads(resp.body)
     assert data["typ"] == "async"
 
